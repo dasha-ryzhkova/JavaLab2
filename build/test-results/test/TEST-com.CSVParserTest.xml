@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.CSVParserTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2020-11-03T16:03:48" hostname="WIN-G1S3CJS4IR3" time="0.032">
+  <properties/>
+  <testcase name="testReadCSVFile" classname="com.CSVParserTest" time="0.005"/>
+  <testcase name="testExtractWordFromLineNull" classname="com.CSVParserTest" time="0.017"/>
+  <testcase name="testExtractWordFromLine" classname="com.CSVParserTest" time="0.0"/>
+  <testcase name="testDeleteQuotesOfLine" classname="com.CSVParserTest" time="0.0"/>
+  <testcase name="testDeleteDoubleQuotesInWordNull" classname="com.CSVParserTest" time="0.0"/>
+  <testcase name="testDeleteQuotesOfLineNull" classname="com.CSVParserTest" time="0.001"/>
+  <testcase name="testDeleteDoubleQuotesInWord" classname="com.CSVParserTest" time="0.0"/>
+  <testcase name="testParseCSV" classname="com.CSVParserTest" time="0.008"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
