@@ -55,8 +55,16 @@ public class CSVParserTest {
         assertEquals("\"\" \"\",\"\"Australia\"\"\"", pars.extractWordFromLine("\"12,\"\"AU\"\",\"\" \"\",\"\"Australia\"\"\""));
 
 
-//        assertEquals("1234,q!bv5", pars.extractWordFromLine("abc,1234,q!bv5"));
-//        assertEquals("q!bv5", pars.extractWordFromLine("1234,q!bv5"));
+        assertEquals("1234,q!bv5", pars.extractWordFromLine("abc,1234,q!bv5"));
+        assertEquals("q!bv5", pars.extractWordFromLine("1234,q!bv5"));
+    }
+
+    @Test
+    public void testExtractWordFromLineNoQuotes() {
+        CSVParser pars = new CSVParser(',' , '"');
+        pars.wordsOfLine = new ArrayList<>();
+        assertEquals("1234,q!bv5", pars.extractWordFromLine("abc,1234,q!bv5"));
+
     }
 
     @Test(expected = NullPointerException.class)
