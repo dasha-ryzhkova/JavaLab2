@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CSVParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JavaLab2</a> &gt; <a href="index.source.html" class="el_package">com</a> &gt; <span class="el_source">CSVParser.java</span></div><h1>CSVParser.java</h1><pre class="source lang-java linenums">package com;
+
+import java.io.*;
+import java.util.ArrayList;
+
+
+public class CSVParser {
+    String outputFile;
+    char delimiter; //,
+    char combiner; //&quot;
+    char newdel; //+
+<span class="fc" id="L12">    ArrayList&lt;ArrayList&lt;String&gt;&gt; linesArr = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L13">    ArrayList&lt;String&gt; wordsOfLine = new ArrayList&lt;&gt;();</span>
+
+
+<span class="fc" id="L16">    public CSVParser(char delimiter, char combiner){</span>
+<span class="fc" id="L17">        this.delimiter = delimiter;</span>
+<span class="fc" id="L18">        this.combiner = combiner;</span>
+<span class="fc" id="L19">    }</span>
+<span class="fc" id="L20">    public CSVParser(String outputFile, char delimiter, char combiner, char newdel) {</span>
+<span class="fc" id="L21">        this.outputFile = outputFile;</span>
+<span class="fc" id="L22">        this.delimiter = delimiter;</span>
+<span class="fc" id="L23">        this.combiner = combiner;</span>
+<span class="fc" id="L24">        this.newdel = newdel;</span>
+<span class="fc" id="L25">    }</span>
+
+    public void readCSVFile(String inputFile) {
+<span class="fc" id="L28">        ArrayList&lt;String&gt;  lines = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L29">        try (BufferedReader rd = new BufferedReader(new FileReader(inputFile));){</span>
+            String str;
+<span class="fc bfc" id="L31" title="All 2 branches covered.">            while ((str = rd.readLine()) != null) {</span>
+<span class="fc" id="L32">                lines.add(str);</span>
+
+            }
+<span class="nc" id="L35">        } catch (FileNotFoundException f) {</span>
+<span class="nc" id="L36">            f.printStackTrace();</span>
+<span class="nc" id="L37">        }catch(Exception e){</span>
+<span class="nc" id="L38">            e.printStackTrace();</span>
+<span class="pc" id="L39">        }</span>
+<span class="fc" id="L40">        parseCSV(lines);</span>
+<span class="fc" id="L41">    }</span>
+
+    public void parseCSV(ArrayList&lt;String&gt; lines) {
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (String s : lines) {</span>
+<span class="fc" id="L45">            String cleanedline = deleteQuotesOfLine(s);</span>
+<span class="fc" id="L46">            wordsOfLine = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">            while (cleanedline.length() &gt; 0) {</span>
+<span class="fc" id="L48">                cleanedline = extractWordFromLine(cleanedline);</span>
+            }
+<span class="fc" id="L50">            linesArr.add(wordsOfLine);</span>
+<span class="fc" id="L51">        }</span>
+<span class="fc" id="L52">        try(BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));) {</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">            for (ArrayList&lt;String&gt; l : linesArr) {</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">                for (int i = 0; i &lt; l.size(); i++) {</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">                    if (i &lt; l.size() - 1) {</span>
+<span class="fc" id="L56">                        writer.write(l.get(i).length() + &quot;&quot; + newdel);</span>
+                    } else {
+<span class="fc" id="L58">                        writer.write(l.get(i).length() + &quot;\n&quot;);</span>
+                    }
+                }
+<span class="fc" id="L61">            }</span>
+<span class="nc" id="L62">        } catch (IOException e) {</span>
+<span class="nc" id="L63">            e.printStackTrace();</span>
+<span class="fc" id="L64">        }</span>
+<span class="fc" id="L65">    }</span>
+
+
+    public String extractWordFromLine(String line) {
+<span class="fc" id="L69">        int i = 0;</span>
+<span class="fc" id="L70">        String word = &quot;&quot;;</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if(line.charAt(i) == '\uFEFF'){</span>
+<span class="nc" id="L72">            i++;</span>
+        }
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if(line.charAt(0) == combiner) {</span>
+            do{
+<span class="fc" id="L76">                word += line.charAt(i);</span>
+<span class="fc" id="L77">                i++;</span>
+<span class="fc bfc" id="L78" title="All 6 branches covered.">            }while (i != line.length() &amp;&amp; line.charAt(i) != delimiter || line.charAt(i - 1) != combiner);</span>
+<span class="fc" id="L79">            word = deleteQuotesOfLine(word);</span>
+<span class="fc" id="L80">            word = deleteQuotesOfLine(word);</span>
+<span class="fc" id="L81">            word = deleteDoubleQuotesInWord(word);</span>
+<span class="fc" id="L82">            wordsOfLine.add(word);</span>
+<span class="fc bfc" id="L83" title="All 4 branches covered.">            while (i &lt; line.length() - 1 &amp;&amp; line.charAt(i) == delimiter) {</span>
+<span class="fc" id="L84">                i++;</span>
+            }
+<span class="fc bfc" id="L86" title="All 2 branches covered.">            if (i &lt; line.length()) {</span>
+<span class="fc" id="L87">                line = line.substring(i);</span>
+            } else {
+<span class="fc" id="L89">                line = &quot;&quot;;</span>
+            }
+        } else {
+            do {
+<span class="fc" id="L93">                word += line.charAt(i);</span>
+<span class="fc" id="L94">                i++;</span>
+<span class="fc bfc" id="L95" title="All 4 branches covered.">            } while (i != line.length() &amp;&amp; line.charAt(i) != delimiter);</span>
+<span class="fc" id="L96">            word = deleteDoubleQuotesInWord(word);</span>
+<span class="fc" id="L97">            wordsOfLine.add(word);</span>
+<span class="fc bfc" id="L98" title="All 4 branches covered.">            while (i &lt; line.length() - 1 &amp;&amp; line.charAt(i) == delimiter) {</span>
+<span class="fc" id="L99">                i++;</span>
+            }
+<span class="fc bfc" id="L101" title="All 2 branches covered.">            if (i &lt; line.length()) {</span>
+<span class="fc" id="L102">                line = line.substring(i);</span>
+            } else {
+<span class="fc" id="L104">                line = &quot;&quot;;</span>
+            }
+        }
+<span class="fc" id="L107">        return line;</span>
+    }
+
+
+    public String deleteQuotesOfLine(String str) {
+<span class="pc bpc" id="L112" title="2 of 6 branches missed.">        if (str.length() &gt; 1 &amp;&amp; str.charAt(0) == combiner &amp;&amp; str.charAt(str.length() - 1) == combiner) {</span>
+<span class="fc" id="L113">            str = str.substring(1, str.length() - 1);</span>
+        }
+<span class="fc" id="L115">        return str;</span>
+    }
+
+    public String deleteDoubleQuotesInWord(String str) {
+<span class="fc" id="L119">        String result = &quot;&quot;;</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        for (int i = 0; i &lt; str.length(); i++){</span>
+<span class="pc bpc" id="L121" title="1 of 6 branches missed.">            if (i != str.length() - 1 &amp;&amp; str.charAt(i) == combiner &amp;&amp; str.charAt(i + 1) == combiner) {</span>
+<span class="fc" id="L122">                result += combiner;</span>
+<span class="fc" id="L123">                i++;</span>
+            } else {
+<span class="fc" id="L125">                result += str.charAt(i);</span>
+            }
+        }
+<span class="fc" id="L128">        return result;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
