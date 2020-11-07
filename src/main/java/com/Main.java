@@ -23,8 +23,8 @@ public class Main {
             String newpath = new String("C:\\Users\\VivoBook\\Desktop\\result.txt");   //scanner.next().CharAt();
 
 
-            CSVParser parser = new CSVParser(path, newpath, del, '"', newdel);
-            parser.readCSVFile();
+            CSVParser parser = new CSVParser(newpath, del, '"', newdel);
+            parser.readCSVFile(path);
 
         }
         else

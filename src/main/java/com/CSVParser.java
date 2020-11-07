@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 
 public class CSVParser {
-    String inputFile;
     String outputFile;
     char delimiter; //,
     char combiner; //"
@@ -18,15 +17,14 @@ public class CSVParser {
         this.delimiter = delimiter;
         this.combiner = combiner;
     }
-    public CSVParser(String inputFile, String outputFile, char delimiter, char combiner, char newdel) {
-        this.inputFile = inputFile;
+    public CSVParser(String outputFile, char delimiter, char combiner, char newdel) {
         this.outputFile = outputFile;
         this.delimiter = delimiter;
         this.combiner = combiner;
         this.newdel = newdel;
     }
 
-    public void readCSVFile() {
+    public void readCSVFile(String inputFile) {
         ArrayList<String>  lines = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(inputFile));){
             String str;

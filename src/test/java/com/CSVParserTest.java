@@ -21,8 +21,8 @@ public class CSVParserTest {
 
     @Test
     public void testCSVParserConstruct2() {
-        CSVParser parser = new CSVParser("path", "newpath", ',', '"', '+');
-        assertEquals("path", parser.inputFile);
+        CSVParser parser = new CSVParser("newpath", ',', '"', '+');
+        assertEquals("newpath", parser.outputFile);
     }
 
 
@@ -36,29 +36,27 @@ public class CSVParserTest {
             char del = ',';
             char newdel = '+';
             String newpath = new String("C:\\Users\\VivoBook\\Desktop\\result.txt");
-            CSVParser parser = new CSVParser(path, newpath, del, '"', newdel);
-            parser.readCSVFile();
+            CSVParser parser = new CSVParser(newpath, del, '"', newdel);
+            parser.readCSVFile(path);
             String result = parser.linesArr.get(0).get(2);
             assertEquals("q2!cvb", result);
         }
         scanner.close();
     }
 
-//    @Test(expected = FileNotFoundException.class)
-//    public void testReadCSVFile2() {
-//        Scanner scanner = new Scanner(System.in);
-//
-//        String path = new String("C:\\Users\\VivoBook\\Desktop\\lab2.csv");
-//        File f = new File(path);
-//
-//        char del = ',';
-//        char newdel = '+';
-//        String newpath = new String("C:\\Users\\VivoBook\\Desktop\\result.txt");
-//        CSVParser parser = new CSVParser(path, newpath, del, '"', newdel);
-//        parser.readCSVFile();
-//        String result = parser.linesArr.get(0).get(2);
-//        assertEquals("q2!cvb", result);
-//    }
+    @Test(expected = NullPointerException.class)
+    public void testReadCSVFile2() {
+        Scanner scanner = new Scanner(System.in);
+
+        String path = null;
+        File f = new File(path);
+
+        char del = ',';
+        char newdel = '+';
+        String newpath = new String("C:\\Users\\VivoBook\\Desktop\\result.txt");
+        CSVParser parser = new CSVParser(newpath, del, '"', newdel);
+        parser.readCSVFile(path);
+    }
 
 
     @Test
